@@ -33,6 +33,10 @@
             <f:checkbox name="slackNotifyBackToNormal" value="true" checked="${instance.getNotifyBackToNormal()}"/>
         </f:entry>
 
+        <f:entry title="Include Test Summary">
+            <f:checkbox name="slackIncludeTestSummary" value="true" checked="${instance.getIncludeTestSummary()}"/>
+        </f:entry>
+
     </f:section>
 
 </j:jelly>

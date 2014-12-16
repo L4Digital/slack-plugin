@@ -5,13 +5,15 @@ import hudson.model.*;
 import hudson.scm.ChangeLogSet;
 import hudson.scm.ChangeLogSet.AffectedFile;
 import hudson.scm.ChangeLogSet.Entry;
-import org.apache.commons.lang.StringUtils;
+import hudson.tasks.test.AbstractTestResultAction;
 
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+
+import org.apache.commons.lang.StringUtils;
 
 @SuppressWarnings("rawtypes")
 public class ActiveNotifier implements FineGrainedNotifier {
@@ -45,7 +47,7 @@ public class ActiveNotifier implements FineGrainedNotifier {
             message.append(cause.getShortDescription());
             notifyStart(build, message.appendOpenLink().toString());
         } else {
-            notifyStart(build, getBuildStatusMessage(build));
+            notifyStart(build, getBuildStatusMessage(build, false));
         }
     }
 
@@ -68,7 +70,7 @@ public class ActiveNotifier implements FineGrainedNotifier {
                 || (result == Result.SUCCESS && previousResult == Result.FAILURE && jobProperty.getNotifyBackToNormal())
                 || (result == Result.SUCCESS && jobProperty.getNotifySuccess())
                 || (result == Result.UNSTABLE && jobProperty.getNotifyUnstable())) {
-            getSlack(r).publish(getBuildStatusMessage(r), getBuildColor(r));
+            getSlack(r).publish(getBuildStatusMessage(r, jobProperty.getIncludeTestSummary()), getBuildColor(r));
         }
     }
 
@@ -114,11 +116,15 @@ public class ActiveNotifier implements FineGrainedNotifier {
         }
     }
 
-    String getBuildStatusMessage(AbstractBuild r) {
+    String getBuildStatusMessage(AbstractBuild r, boolean includeTestSummary) {
         MessageBuilder message = new MessageBuilder(notifier, r);
         message.appendStatusMessage();
         message.appendDuration();
-        return message.appendOpenLink().toString();
+        message.appendOpenLink();
+        if (!includeTestSummary){
+            return message.toString();
+        }
+        return message.appendTestSummary().toString();
     }
 
     public static class MessageBuilder {
@@ -181,6 +187,23 @@ public class ActiveNotifier implements FineGrainedNotifier {
         public MessageBuilder appendDuration() {
             message.append(" after ");
             message.append(build.getDurationString());
+            return this;
+        }
+
+        public MessageBuilder appendTestSummary(){
+            AbstractTestResultAction<?> action = this.build
+                    .getAction(AbstractTestResultAction.class);
+            if (action != null) {
+                int total = action.getTotalCount();
+                int failed = action.getFailCount();
+                int skipped = action.getSkipCount();
+                message.append("\nTest Summary - ");
+                message.append("Passed: " + (total - failed - skipped));
+                message.append(", Failed: " + failed);
+                message.append(", Skipped: " + skipped);
+            } else {
+                message.append("No tests found.");
+            }
             return this;
         }
 
