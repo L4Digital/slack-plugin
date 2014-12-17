@@ -1,7 +1,14 @@
-target
+# eclipse
 .classpath
-.idea
 .project
 .settings
+
+# intelliJ
+.idea
+*.iml
+
+# general
 bin
+out
+target
 work
