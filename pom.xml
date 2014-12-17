@@ -19,7 +19,7 @@
 
 	<artifactId>slack</artifactId>
 	<packaging>hpi</packaging>
-	<version>1.7-SNAPSHOT</version>
+	<version>1.8-SNAPSHOT</version>
 	<name>Slack Notification Plugin</name>
 	<description>A Build status publisher that notifies channels on a Slack team</description>
     <url>http://wiki.jenkins-ci.org/display/JENKINS/Slack+Plugin</url>
@@ -105,6 +105,11 @@
           <id>grantmd</id>
           <name>Myles Grant</name>
           <email>myles@tinyspeck.com</email>
+        </developer>
+        <developer>
+            <id>raid5</id>
+            <name>Adam McDonald</name>
+            <email>adam@l4mobile.com</email>
         </developer>
     </developers>
 
