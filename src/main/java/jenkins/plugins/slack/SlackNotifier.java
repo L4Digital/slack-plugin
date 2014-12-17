@@ -155,7 +155,9 @@ public class SlackNotifier extends Notifier {
         private boolean notifyAborted;
         private boolean notifyNotBuilt;
         private boolean notifyUnstable;
+        private boolean notifyFirstUnstableOnly;
         private boolean notifyFailure;
+        private boolean notifyFirstFailureOnly;
         private boolean notifyBackToNormal;
         private boolean includeTestSummary;
 
@@ -165,18 +167,22 @@ public class SlackNotifier extends Notifier {
                                   boolean startNotification,
                                   boolean notifyAborted,
                                   boolean notifyFailure,
+                                  boolean notifyFirstFailureOnly,
                                   boolean notifyNotBuilt,
                                   boolean notifySuccess,
                                   boolean notifyUnstable,
+                                  boolean notifyFirstUnstableOnly,
                                   boolean notifyBackToNormal,
                                   boolean includeTestSummary) {
             this.room = room;
             this.startNotification = startNotification;
             this.notifyAborted = notifyAborted;
             this.notifyFailure = notifyFailure;
+            this.notifyFirstFailureOnly = notifyFirstFailureOnly;
             this.notifyNotBuilt = notifyNotBuilt;
             this.notifySuccess = notifySuccess;
             this.notifyUnstable = notifyUnstable;
+            this.notifyFirstUnstableOnly = notifyFirstUnstableOnly;
             this.notifyBackToNormal = notifyBackToNormal;
             this.includeTestSummary = includeTestSummary;
         }
@@ -221,6 +227,11 @@ public class SlackNotifier extends Notifier {
         }
 
         @Exported
+        public boolean getNotifyFirstFailureOnly() {
+            return notifyFirstFailureOnly;
+        }
+
+        @Exported
         public boolean getNotifyNotBuilt() {
             return notifyNotBuilt;
         }
@@ -228,6 +239,11 @@ public class SlackNotifier extends Notifier {
         @Exported
         public boolean getNotifyUnstable() {
             return notifyUnstable;
+        }
+
+        @Exported
+        public boolean getNotifyFirstUnstableOnly() {
+            return notifyFirstUnstableOnly;
         }
 
         @Exported
@@ -255,9 +271,11 @@ public class SlackNotifier extends Notifier {
                         sr.getParameter("slackStartNotification") != null,
                         sr.getParameter("slackNotifyAborted") != null,
                         sr.getParameter("slackNotifyFailure") != null,
+                        sr.getParameter("slackNotifyFirstFailureOnly") != null,
                         sr.getParameter("slackNotifyNotBuilt") != null,
                         sr.getParameter("slackNotifySuccess") != null,
                         sr.getParameter("slackNotifyUnstable") != null,
+                        sr.getParameter("slackNotifyFirstUnstableOnly") != null,
                         sr.getParameter("slackNotifyBackToNormal") != null,
                         sr.getParameter("slackIncludeTestSummary") != null);
             }

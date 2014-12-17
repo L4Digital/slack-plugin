@@ -17,6 +17,10 @@
             <f:checkbox name="slackNotifyFailure" value="true" checked="${instance.getNotifyFailure()}"/>
         </f:entry>
 
+        <f:entry title="Notify First Failure Only">
+            <f:checkbox name="slackNotifyFirstFailureOnly" value="true" checked="${instance.getNotifyFirstFailureOnly()}"/>
+        </f:entry>
+
         <f:entry title="Notify Not Built">
             <f:checkbox name="slackNotifyNotBuilt" value="true" checked="${instance.getNotifyNotBuilt()}"/>
         </f:entry>
@@ -27,6 +31,10 @@
 
         <f:entry title="Notify Unstable">
             <f:checkbox name="slackNotifyUnstable" value="true" checked="${instance.getNotifyUnstable()}"/>
+        </f:entry>
+
+        <f:entry title="Notify First Unstable Only">
+            <f:checkbox name="slackNotifyFirstUnstableOnly" value="true" checked="${instance.getNotifyFirstUnstableOnly()}"/>
         </f:entry>
 
         <f:entry title="Notify Back To Normal">
